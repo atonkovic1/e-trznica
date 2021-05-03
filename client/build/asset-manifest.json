@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.js": "/static/js/main.aec95fa1.chunk.js",
+    "main.js.map": "/static/js/main.aec95fa1.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.35eb2b37.js",
+    "runtime-main.js.map": "/static/js/runtime-main.35eb2b37.js.map",
+    "static/js/2.350c2809.chunk.js": "/static/js/2.350c2809.chunk.js",
+    "static/js/2.350c2809.chunk.js.map": "/static/js/2.350c2809.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.ab4bf2dc71c74ef0a61a1a6e0179e68c.js": "/precache-manifest.ab4bf2dc71c74ef0a61a1a6e0179e68c.js",
+    "service-worker.js": "/service-worker.js",
+    "static/js/2.350c2809.chunk.js.LICENSE.txt": "/static/js/2.350c2809.chunk.js.LICENSE.txt",
+    "static/media/adminCategoriesImage.jpg": "/static/media/adminCategoriesImage.180f9068.jpg",
+    "static/media/adminCountiesImage.jpg": "/static/media/adminCountiesImage.41e6e393.jpg",
+    "static/media/adminPostOfficesImage.jpg": "/static/media/adminPostOfficesImage.71e18201.jpg",
+    "static/media/adminUnitsImage.jpg": "/static/media/adminUnitsImage.42d8ab52.jpg",
+    "static/media/farmersImage.jpg": "/static/media/farmersImage.abfc0f1c.jpg",
+    "static/media/homeHeroImage.jpg": "/static/media/homeHeroImage.8ce3de0a.jpg",
+    "static/media/homeSubHeroImage.jpg": "/static/media/homeSubHeroImage.64d62472.jpg",
+    "static/media/loginImage.jpg": "/static/media/loginImage.e70c23ad.jpg",
+    "static/media/productsImage.jpg": "/static/media/productsImage.0435bdba.jpg",
+    "static/media/registerImage.jpg": "/static/media/registerImage.52e2f8bd.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.35eb2b37.js",
+    "static/js/2.350c2809.chunk.js",
+    "static/js/main.aec95fa1.chunk.js"
+  ]
+}
