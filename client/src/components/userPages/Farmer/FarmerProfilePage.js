@@ -460,9 +460,6 @@ function FarmerProfilePage(props) {
 					date.setDate(date.getDate());
 					rating.datum_kreiranja = date.toLocaleDateString("hr-HR");
 
-					// TEST
-					console.log(rating.datum_kreiranja);
-
 					totalRating += rating.ocjena;
 				});
 				totalRating = totalRating / res.data.length;
