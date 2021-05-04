@@ -15,7 +15,10 @@ const upload = multer({
 		acl: "public-read",
 		contentType: multerS3.AUTO_CONTENT_TYPE,
 		key: (req, file, callback) => {
-			callback(null, `products-images/${req.params.id}/${file.originalname}`);
+			callback(
+				null,
+				`products-images/${req.params.id}/${file.originalname}`
+			);
 		},
 	}),
 });
@@ -27,12 +30,6 @@ router.get("/product/:id", (req, res) => {
 		"SELECT oglas.sif_oglasa, vrsta_proizvoda.naziv_vrste_proizvoda, mjerna_jedinica.sif_mjerne_jedinice, mjerna_jedinica.oznaka_mjerne_jedinice, oglas.cijena, oglas.opis_oglasa, korisnik.sif_korisnika, korisnik.ime, korisnik.prezime, poljoprivrednik.ime_gospodarstva, korisnik.broj_telefona, korisnik.email, oglas.datum_kreiranja FROM oglas JOIN vrsta_proizvoda ON vrsta_proizvoda.sif_vrste_proizvoda = oglas.sif_proizvoda JOIN mjerna_jedinica ON mjerna_jedinica.sif_mjerne_jedinice = oglas.sif_mjerne_jedinice JOIN poljoprivrednik ON poljoprivrednik.sif_poljoprivrednika = oglas.sif_autora JOIN korisnik ON korisnik.sif_korisnika = poljoprivrednik.sif_korisnika WHERE oglas.sif_oglasa = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			results["slike"] = [];
 
 			res.send(results[0]);
@@ -59,12 +56,6 @@ router.get("/product_ratings/:id", (req, res) => {
 		"SELECT ocjena_oglasa.sif_ocjene, ocjena_oglasa.ocjena, ocjena_oglasa.sif_autora, korisnik.ime, korisnik.prezime, ocjena_oglasa.komentar, ocjena_oglasa.datum_kreiranja FROM ocjena_oglasa JOIN korisnik ON ocjena_oglasa.sif_autora = korisnik.sif_korisnika WHERE ocjena_oglasa.sif_oglasa = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			res.send(results);
 		}
 	);
@@ -209,7 +200,8 @@ router.delete("/image", auth, (req, res) => {
 		(err, data) => {
 			if (err) {
 				return res.status(500).json({
-					message: "Greška pri brisanju datoteke sa Amazon S3 bucket-a",
+					message:
+						"Greška pri brisanju datoteke sa Amazon S3 bucket-a",
 				});
 			} else {
 				database.query(

@@ -31,12 +31,6 @@ router.get("/ratings/:id", (req, res) => {
 		"SELECT ocjena_poljoprivrednika.sif_ocjene, ocjena_poljoprivrednika.ocjena, ocjena_poljoprivrednika.sif_autora, korisnik.ime, korisnik.prezime, ocjena_poljoprivrednika.komentar, ocjena_poljoprivrednika.datum_kreiranja FROM ocjena_poljoprivrednika JOIN korisnik ON ocjena_poljoprivrednika.sif_autora = korisnik.sif_korisnika WHERE ocjena_poljoprivrednika.sif_poljoprivrednika = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			res.send(results);
 		}
 	);

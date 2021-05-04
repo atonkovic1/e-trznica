@@ -22,16 +22,6 @@ router.get("/orders/:id", auth, (req, res) => {
 		"SELECT narudzba.sif_narudzbe, narudzba.kolicina, narudzba.dostavljena, narudzba.datum_dostave, oglas.sif_oglasa, vrsta_proizvoda.naziv_vrste_proizvoda, mjerna_jedinica.oznaka_mjerne_jedinice, oglas.cijena, oglas.opis_oglasa, poljoprivrednik.ime_gospodarstva, korisnik.sif_korisnika, korisnik.pbr_mjesta_stanovanja, korisnik.adresa_stanovanja, postanski_ured.naziv_post_ureda, zupanija.naziv_zupanije, korisnik.broj_telefona, korisnik.email, narudzba.datum_narudzbe, poljoprivrednik.rok_isporuke_dani FROM narudzba JOIN oglas ON narudzba.sif_oglasa = oglas.sif_oglasa JOIN vrsta_proizvoda ON vrsta_proizvoda.sif_vrste_proizvoda = oglas.sif_proizvoda JOIN mjerna_jedinica ON mjerna_jedinica.sif_mjerne_jedinice = oglas.sif_mjerne_jedinice JOIN poljoprivrednik ON poljoprivrednik.sif_poljoprivrednika = oglas.sif_autora JOIN korisnik ON poljoprivrednik.sif_korisnika = korisnik.sif_korisnika JOIN postanski_ured ON korisnik.pbr_mjesta_stanovanja = postanski_ured.post_broj JOIN zupanija ON postanski_ured.sif_zupanije = zupanija.sif_zupanije WHERE narudzba.sif_kupca = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_narudzbe = new Date(item.datum_narudzbe).toLocaleDateString(
-					"hr-HR"
-				);
-
-				item.datum_dostave = new Date(item.datum_dostave).toLocaleDateString(
-					"hr-HR"
-				);
-			});
-
 			results["slike"] = [];
 
 			res.send(results);
@@ -58,12 +48,6 @@ router.get("/farmer_ratings/:id", (req, res) => {
 		"SELECT ocjena_poljoprivrednika.sif_ocjene, poljoprivrednik.ime_gospodarstva, ocjena_poljoprivrednika.ocjena, ocjena_poljoprivrednika.komentar, ocjena_poljoprivrednika.datum_kreiranja, korisnik.sif_korisnika FROM ocjena_poljoprivrednika JOIN poljoprivrednik ON ocjena_poljoprivrednika.sif_poljoprivrednika = poljoprivrednik.sif_poljoprivrednika JOIN korisnik ON korisnik.sif_korisnika = poljoprivrednik.sif_korisnika WHERE ocjena_poljoprivrednika.sif_autora = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			res.send(results);
 		}
 	);
@@ -76,12 +60,6 @@ router.get("/product_ratings/:id", (req, res) => {
 		"SELECT ocjena_oglasa.sif_ocjene, vrsta_proizvoda.naziv_vrste_proizvoda, oglas.sif_oglasa, oglas.opis_oglasa, poljoprivrednik.ime_gospodarstva, ocjena_oglasa.ocjena, ocjena_oglasa.komentar, ocjena_oglasa.datum_kreiranja FROM ocjena_oglasa JOIN oglas ON oglas.sif_oglasa = ocjena_oglasa.sif_oglasa JOIN vrsta_proizvoda ON vrsta_proizvoda.sif_vrste_proizvoda = oglas.sif_proizvoda JOIN mjerna_jedinica ON mjerna_jedinica.sif_mjerne_jedinice = oglas.sif_mjerne_jedinice JOIN poljoprivrednik ON poljoprivrednik.sif_poljoprivrednika = oglas.sif_autora JOIN korisnik ON korisnik.sif_korisnika = poljoprivrednik.sif_korisnika WHERE ocjena_oglasa.sif_autora = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			res.send(results);
 		}
 	);
@@ -108,7 +86,8 @@ router.put("/customer_info", auth, (req, res) => {
 		(results) => {
 			if (results.map((item) => item.email).includes(email)) {
 				res.status(400).json({
-					message: "Greška! Korisnik s unesenom e-mail adresom već postoji",
+					message:
+						"Greška! Korisnik s unesenom e-mail adresom već postoji",
 				});
 			} else {
 				editUser();
@@ -120,7 +99,15 @@ router.put("/customer_info", auth, (req, res) => {
 	const editUser = () => {
 		database.query(
 			"UPDATE korisnik SET ime = $1, pbr_mjesta_stanovanja = $2, adresa_stanovanja = $3, broj_telefona = $4, email = $5, prezime = $6 WHERE sif_korisnika = $7;",
-			[firstName, postalCode, address, phoneNumber, email, lastName, userId],
+			[
+				firstName,
+				postalCode,
+				address,
+				phoneNumber,
+				email,
+				lastName,
+				userId,
+			],
 			(results) => {
 				res.send(results);
 			}

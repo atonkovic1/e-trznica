@@ -10,12 +10,6 @@ router.get("/product_data/:id", (req, res) => {
 		"SELECT oglas.sif_oglasa, vrsta_proizvoda.naziv_vrste_proizvoda, mjerna_jedinica.sif_mjerne_jedinice, mjerna_jedinica.oznaka_mjerne_jedinice, oglas.cijena, oglas.opis_oglasa, korisnik.sif_korisnika, korisnik.ime, korisnik.prezime, poljoprivrednik.ime_gospodarstva, poljoprivrednik.rok_isporuke_dani, korisnik.broj_telefona, korisnik.email, oglas.datum_kreiranja FROM oglas JOIN vrsta_proizvoda ON vrsta_proizvoda.sif_vrste_proizvoda = oglas.sif_proizvoda JOIN mjerna_jedinica ON mjerna_jedinica.sif_mjerne_jedinice = oglas.sif_mjerne_jedinice JOIN poljoprivrednik ON poljoprivrednik.sif_poljoprivrednika = oglas.sif_autora JOIN korisnik ON korisnik.sif_korisnika = poljoprivrednik.sif_korisnika WHERE oglas.sif_oglasa = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			results["slike"] = [];
 
 			res.send(results[0]);

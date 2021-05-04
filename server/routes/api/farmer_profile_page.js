@@ -54,12 +54,6 @@ router.get("/products/:id", (req, res) => {
 		"SELECT oglas.sif_oglasa, vrsta_proizvoda.naziv_vrste_proizvoda, mjerna_jedinica.oznaka_mjerne_jedinice, oglas.cijena, oglas.opis_oglasa, oglas.datum_kreiranja FROM oglas JOIN vrsta_proizvoda ON vrsta_proizvoda.sif_vrste_proizvoda = oglas.sif_proizvoda JOIN mjerna_jedinica ON mjerna_jedinica.sif_mjerne_jedinice = oglas.sif_mjerne_jedinice WHERE oglas.sif_autora = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-			});
-
 			results["slike"] = [];
 
 			res.send(results);
@@ -86,20 +80,6 @@ router.get("/orders/:id", auth, (req, res) => {
 		"SELECT narudzba.sif_narudzbe, narudzba.kolicina, narudzba.dostavljena, narudzba.datum_dostave, oglas.sif_oglasa, vrsta_proizvoda.naziv_vrste_proizvoda, mjerna_jedinica.oznaka_mjerne_jedinice, oglas.cijena, oglas.opis_oglasa, oglas.datum_kreiranja, korisnik.ime, korisnik.prezime, korisnik.pbr_mjesta_stanovanja, korisnik.adresa_stanovanja, postanski_ured.naziv_post_ureda, zupanija.naziv_zupanije, korisnik.broj_telefona, korisnik.email, narudzba.datum_narudzbe FROM narudzba JOIN oglas ON narudzba.sif_oglasa = oglas.sif_oglasa JOIN vrsta_proizvoda ON vrsta_proizvoda.sif_vrste_proizvoda = oglas.sif_proizvoda JOIN mjerna_jedinica ON mjerna_jedinica.sif_mjerne_jedinice = oglas.sif_mjerne_jedinice JOIN korisnik ON narudzba.sif_kupca = korisnik.sif_korisnika JOIN postanski_ured ON korisnik.pbr_mjesta_stanovanja = postanski_ured.post_broj JOIN zupanija ON postanski_ured.sif_zupanije = zupanija.sif_zupanije WHERE oglas.sif_autora = $1;",
 		[req.params.id],
 		(results) => {
-			results.forEach((item) => {
-				item.datum_kreiranja = new Date(
-					item.datum_kreiranja
-				).toLocaleDateString("hr-HR");
-
-				item.datum_narudzbe = new Date(
-					item.datum_narudzbe
-				).toLocaleDateString("hr-HR");
-
-				item.datum_dostave = new Date(
-					item.datum_dostave
-				).toLocaleDateString("hr-HR");
-			});
-
 			results["slike"] = [];
 
 			res.send(results);
