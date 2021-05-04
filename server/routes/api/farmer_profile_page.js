@@ -91,13 +91,13 @@ router.get("/orders/:id", auth, (req, res) => {
 					item.datum_kreiranja
 				).toLocaleDateString("hr-HR");
 
-				item.datum_narudzbe = new Date(item.datum_narudzbe).toLocaleDateString(
-					"hr-HR"
-				);
+				item.datum_narudzbe = new Date(
+					item.datum_narudzbe
+				).toLocaleDateString("hr-HR");
 
-				item.datum_dostave = new Date(item.datum_dostave).toLocaleDateString(
-					"hr-HR"
-				);
+				item.datum_dostave = new Date(
+					item.datum_dostave
+				).toLocaleDateString("hr-HR");
 			});
 
 			results["slike"] = [];
@@ -118,6 +118,9 @@ router.get("/ratings/:id", (req, res) => {
 				item.datum_kreiranja = new Date(
 					item.datum_kreiranja
 				).toLocaleDateString("hr-HR");
+
+				// TEST
+				console.log(item.datum_kreiranja);
 			});
 
 			res.send(results);
@@ -214,7 +217,8 @@ router.put("/farmer_info", auth, (req, res) => {
 		(results) => {
 			if (results.map((item) => item.email).includes(email)) {
 				res.status(400).json({
-					message: "Greška! Korisnik s unesenom e-mail adresom već postoji",
+					message:
+						"Greška! Korisnik s unesenom e-mail adresom već postoji",
 				});
 			} else {
 				editUser();
@@ -226,7 +230,15 @@ router.put("/farmer_info", auth, (req, res) => {
 	const editUser = () => {
 		database.query(
 			"UPDATE korisnik SET ime = $1, pbr_mjesta_stanovanja = $2, adresa_stanovanja = $3, broj_telefona = $4, email = $5, prezime = $6 WHERE sif_korisnika = $7;",
-			[firstName, postalCode, address, phoneNumber, email, lastName, userId],
+			[
+				firstName,
+				postalCode,
+				address,
+				phoneNumber,
+				email,
+				lastName,
+				userId,
+			],
 			(results) => {
 				editFarmer();
 			}
@@ -277,7 +289,8 @@ router.delete("/image", auth, (req, res) => {
 		(err, data) => {
 			if (err) {
 				return res.status(500).json({
-					message: "Greška pri brisanju datoteke sa Amazon S3 bucket-a",
+					message:
+						"Greška pri brisanju datoteke sa Amazon S3 bucket-a",
 				});
 			} else {
 				database.query(

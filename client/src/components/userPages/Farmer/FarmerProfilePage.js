@@ -311,7 +311,9 @@ function FarmerProfilePage(props) {
 			}
 
 			if (pageNumProducts > Math.ceil(farmerData.products.length / 4)) {
-				const newPageNumProducts = Math.ceil(farmerData.products.length / 4);
+				const newPageNumProducts = Math.ceil(
+					farmerData.products.length / 4
+				);
 				setPageNumProducts(newPageNumProducts);
 			}
 		}
@@ -458,6 +460,9 @@ function FarmerProfilePage(props) {
 					date.setDate(date.getDate());
 					rating.datum_kreiranja = date.toLocaleDateString("hr-HR");
 
+					// TEST
+					console.log(rating.datum_kreiranja);
+
 					totalRating += rating.ocjena;
 				});
 				totalRating = totalRating / res.data.length;
@@ -494,7 +499,9 @@ function FarmerProfilePage(props) {
 				lastName: userData.prezime,
 				address: userData.adresa_stanovanja,
 				postalCodeLong:
-					userData.pbr_mjesta_stanovanja + " " + userData.naziv_post_ureda,
+					userData.pbr_mjesta_stanovanja +
+					" " +
+					userData.naziv_post_ureda,
 				county: userData.naziv_zupanije,
 				phoneNumber: userData.broj_telefona,
 				email: userData.email,
@@ -515,7 +522,9 @@ function FarmerProfilePage(props) {
 				lastName: userData.prezime,
 				address: userData.adresa_stanovanja,
 				postalCodeLong:
-					userData.pbr_mjesta_stanovanja + " " + userData.naziv_post_ureda,
+					userData.pbr_mjesta_stanovanja +
+					" " +
+					userData.naziv_post_ureda,
 				phoneNumber: userData.broj_telefona,
 				oldEmail: userData.email,
 				email: userData.email,
@@ -571,7 +580,9 @@ function FarmerProfilePage(props) {
 					firstName: newFarmerInfo.firstName,
 					lastName: newFarmerInfo.lastName,
 					address: newFarmerInfo.address,
-					postalCode: parseInt(newFarmerInfo.postalCodeLong.split()[0]),
+					postalCode: parseInt(
+						newFarmerInfo.postalCodeLong.split()[0]
+					),
 					phoneNumber: newFarmerInfo.phoneNumber,
 					oldEmail: newFarmerInfo.email,
 					email: newFarmerInfo.email,
@@ -665,7 +676,9 @@ function FarmerProfilePage(props) {
 	const deleteProduct = async (productId, products = farmerData.products) => {
 		const canDelete = await axios
 			.get(
-				`/api/farmer_profile_page/product_delete_check/${parseInt(productId)}`,
+				`/api/farmer_profile_page/product_delete_check/${parseInt(
+					productId
+				)}`,
 				tokenConfig(store.getState)
 			)
 			.catch((err) => {
@@ -686,13 +699,17 @@ function FarmerProfilePage(props) {
 
 			let promises = [];
 			for (const image of images) {
-				promises.push(deleteProductImage(image.sif_slike, image.url_slike));
+				promises.push(
+					deleteProductImage(image.sif_slike, image.url_slike)
+				);
 			}
 
 			Promise.all(promises).then(() => {
 				axios
 					.delete(
-						`/api/farmer_profile_page/product/${parseInt(productId)}`,
+						`/api/farmer_profile_page/product/${parseInt(
+							productId
+						)}`,
 						tokenConfig(store.getState)
 					)
 					.then(() => getFarmerData());
@@ -778,23 +795,33 @@ function FarmerProfilePage(props) {
 								}
 							>
 								{!editMenuIsOpen ? (
-									<Typography variant="h3">{farmerData.farmerName}</Typography>
+									<Typography variant="h3">
+										{farmerData.farmerName}
+									</Typography>
 								) : (
 									<React.Fragment>
 										<Hidden smDown>
-											<Box className={classes.nameEditBox}>
+											<Box
+												className={classes.nameEditBox}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
 													id="farmerName"
 													label="Ime gospodarstva"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.farmerName}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.farmerName
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															farmerName: event.target.value,
+															farmerName:
+																event.target
+																	.value,
 														});
 													}}
 												/>
@@ -802,19 +829,29 @@ function FarmerProfilePage(props) {
 										</Hidden>
 
 										<Hidden mdUp>
-											<Box className={classes.nameEditBoxSm}>
+											<Box
+												className={
+													classes.nameEditBoxSm
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
 													id="farmerName"
 													label="Ime gospodarstva"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.farmerName}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.farmerName
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															farmerName: event.target.value,
+															farmerName:
+																event.target
+																	.value,
 														});
 													}}
 												/>
@@ -825,7 +862,8 @@ function FarmerProfilePage(props) {
 
 								{props.auth.user === null ||
 								!(
-									props.auth.user.userId === parseInt(props.match.params.id)
+									props.auth.user.userId ===
+									parseInt(props.match.params.id)
 								) ? (
 									<React.Fragment />
 								) : !editMenuIsOpen ? (
@@ -855,18 +893,29 @@ function FarmerProfilePage(props) {
 												color="inherit"
 												onClick={() => {
 													setNewFarmerInfo({
-														userId: farmerData.userId,
-														firstName: farmerData.firstName,
-														lastName: farmerData.lastName,
-														address: farmerData.address,
-														postalCodeLong: farmerData.postalCodeLong,
-														phoneNumber: farmerData.phoneNumber,
-														oldEmail: farmerData.email,
+														userId:
+															farmerData.userId,
+														firstName:
+															farmerData.firstName,
+														lastName:
+															farmerData.lastName,
+														address:
+															farmerData.address,
+														postalCodeLong:
+															farmerData.postalCodeLong,
+														phoneNumber:
+															farmerData.phoneNumber,
+														oldEmail:
+															farmerData.email,
 														email: farmerData.email,
-														farmerId: farmerData.farmerId,
-														farmerName: farmerData.farmerName,
-														farmDesc: farmerData.farmDesc,
-														deliveryDays: farmerData.deliveryDays,
+														farmerId:
+															farmerData.farmerId,
+														farmerName:
+															farmerData.farmerName,
+														farmDesc:
+															farmerData.farmDesc,
+														deliveryDays:
+															farmerData.deliveryDays,
 													});
 
 													setEditMenuIsOpen(false);
@@ -897,21 +946,35 @@ function FarmerProfilePage(props) {
 													color="inherit"
 													onClick={() => {
 														setNewFarmerInfo({
-															userId: farmerData.userId,
-															firstName: farmerData.firstName,
-															lastName: farmerData.lastName,
-															address: farmerData.address,
-															postalCodeLong: farmerData.postalCodeLong,
-															phoneNumber: farmerData.phoneNumber,
-															oldEmail: farmerData.email,
-															email: farmerData.email,
-															farmerId: farmerData.farmerId,
-															farmerName: farmerData.farmerName,
-															farmDesc: farmerData.farmDesc,
-															deliveryDays: farmerData.deliveryDays,
+															userId:
+																farmerData.userId,
+															firstName:
+																farmerData.firstName,
+															lastName:
+																farmerData.lastName,
+															address:
+																farmerData.address,
+															postalCodeLong:
+																farmerData.postalCodeLong,
+															phoneNumber:
+																farmerData.phoneNumber,
+															oldEmail:
+																farmerData.email,
+															email:
+																farmerData.email,
+															farmerId:
+																farmerData.farmerId,
+															farmerName:
+																farmerData.farmerName,
+															farmDesc:
+																farmerData.farmDesc,
+															deliveryDays:
+																farmerData.deliveryDays,
 														});
 
-														setEditMenuIsOpen(false);
+														setEditMenuIsOpen(
+															false
+														);
 													}}
 												>
 													<HighlightOffIcon
@@ -927,7 +990,9 @@ function FarmerProfilePage(props) {
 
 							<Box className={classes.subSection}>
 								{!editMenuIsOpen ? (
-									<Typography variant="body1">{farmerData.farmDesc}</Typography>
+									<Typography variant="body1">
+										{farmerData.farmDesc}
+									</Typography>
 								) : (
 									<TextField
 										variant="filled"
@@ -951,7 +1016,10 @@ function FarmerProfilePage(props) {
 							</Box>
 
 							<Box className={classes.subSection}>
-								<Typography variant="h5" className={classes.subSectionTitle}>
+								<Typography
+									variant="h5"
+									className={classes.subSectionTitle}
+								>
 									Slike gospodarstva
 								</Typography>
 
@@ -967,7 +1035,10 @@ function FarmerProfilePage(props) {
 												className={classes.imagePaper}
 											>
 												<a
-													href={image.url_slike + "?content-disposition=inline"}
+													href={
+														image.url_slike +
+														"?content-disposition=inline"
+													}
 													target="_blank"
 													rel="noopener noreferrer"
 												>
@@ -984,7 +1055,9 @@ function FarmerProfilePage(props) {
 
 												{props.auth.user !== null &&
 												props.auth.user.userId ===
-													parseInt(props.match.params.id) &&
+													parseInt(
+														props.match.params.id
+													) &&
 												image !== undefined &&
 												image !== null ? (
 													<Button
@@ -1007,11 +1080,14 @@ function FarmerProfilePage(props) {
 										))}
 									</Box>
 								) : (
-									<Typography variant="body1">Nema slika</Typography>
+									<Typography variant="body1">
+										Nema slika
+									</Typography>
 								)}
 
 								{props.auth.user !== null &&
-								props.auth.user.userId === parseInt(props.match.params.id) ? (
+								props.auth.user.userId ===
+									parseInt(props.match.params.id) ? (
 									<Box className={classes.subSection}>
 										<input
 											id="add-files-button"
@@ -1021,25 +1097,34 @@ function FarmerProfilePage(props) {
 											multiple
 											accept="image/*"
 											onChange={(event) =>
-												setImageInputData(event.target.files)
+												setImageInputData(
+													event.target.files
+												)
 											}
 											className={classes.hiddenInput}
 										/>
 										<label htmlFor="add-files-button">
-											<Box className={classes.addImagesBox}>
+											<Box
+												className={classes.addImagesBox}
+											>
 												<Button
 													component="span"
 													variant="outlined"
 													size="medium"
 													color="inherit"
-													style={{ marginRight: "16px" }}
+													style={{
+														marginRight: "16px",
+													}}
 													disabled={imagesLoading}
 												>
 													Dodaj slike
 												</Button>
 
 												{imagesLoading ? (
-													<CircularProgress color="inherit" size={25} />
+													<CircularProgress
+														color="inherit"
+														size={25}
+													/>
 												) : (
 													<React.Fragment />
 												)}
@@ -1063,7 +1148,10 @@ function FarmerProfilePage(props) {
 							</Box>
 
 							<Box className={classes.subSection}>
-								<Typography variant="h5" className={classes.subSectionTitle}>
+								<Typography
+									variant="h5"
+									className={classes.subSectionTitle}
+								>
 									Kontakt podaci
 								</Typography>
 
@@ -1094,8 +1182,14 @@ function FarmerProfilePage(props) {
 								) : (
 									<React.Fragment>
 										<Hidden smDown>
-											<Box className={classes.addressEditBox}>
-												<Box style={{ width: "49.40%" }}>
+											<Box
+												className={
+													classes.addressEditBox
+												}
+											>
+												<Box
+													style={{ width: "49.40%" }}
+												>
 													<TextField
 														variant="filled"
 														fullWidth
@@ -1103,23 +1197,34 @@ function FarmerProfilePage(props) {
 														label="Adresa stanovanja"
 														helperText="npr. Unska ulica 3, Zagreb"
 														required
-														inputProps={{ form: "farmerInfoForm" }}
-														value={newFarmerInfo.address}
+														inputProps={{
+															form:
+																"farmerInfoForm",
+														}}
+														value={
+															newFarmerInfo.address
+														}
 														onChange={(event) => {
 															setNewFarmerInfo({
 																...newFarmerInfo,
-																address: event.target.value,
+																address:
+																	event.target
+																		.value,
 															});
 														}}
 													/>
 												</Box>
 
-												<Box style={{ width: "49.40%" }}>
+												<Box
+													style={{ width: "49.40%" }}
+												>
 													<Autocomplete
 														id="postalCodeLong"
 														fullWidth
 														autoSelect
-														renderInput={(params) => (
+														renderInput={(
+															params
+														) => (
 															<TextField
 																{...params}
 																variant="filled"
@@ -1127,22 +1232,38 @@ function FarmerProfilePage(props) {
 																required
 																inputProps={{
 																	...params.inputProps,
-																	form: "farmerInfoForm",
+																	form:
+																		"farmerInfoForm",
 																}}
 															/>
 														)}
 														options={postOffices
-															.map((postOffice) => {
-																return (
-																	postOffice.post_broj +
-																	" " +
-																	postOffice.naziv_post_ureda
-																);
-															})
-															.sort(new Intl.Collator("hr").compare)}
-														getOptionLabel={(option) => option}
-														value={newFarmerInfo.postalCodeLong}
-														onChange={(event, value) => {
+															.map(
+																(
+																	postOffice
+																) => {
+																	return (
+																		postOffice.post_broj +
+																		" " +
+																		postOffice.naziv_post_ureda
+																	);
+																}
+															)
+															.sort(
+																new Intl.Collator(
+																	"hr"
+																).compare
+															)}
+														getOptionLabel={(
+															option
+														) => option}
+														value={
+															newFarmerInfo.postalCodeLong
+														}
+														onChange={(
+															event,
+															value
+														) => {
 															setNewFarmerInfo({
 																...newFarmerInfo,
 																postalCodeLong: value,
@@ -1154,7 +1275,11 @@ function FarmerProfilePage(props) {
 										</Hidden>
 
 										<Hidden mdUp>
-											<Box className={classes.addressEditBoxSm}>
+											<Box
+												className={
+													classes.addressEditBoxSm
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
@@ -1162,12 +1287,18 @@ function FarmerProfilePage(props) {
 													label="Adresa stanovanja"
 													helperText="npr. Unska ulica 3, Zagreb"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.address}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.address
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															address: event.target.value,
+															address:
+																event.target
+																	.value,
 														});
 													}}
 													className={classes.rowItem}
@@ -1185,9 +1316,12 @@ function FarmerProfilePage(props) {
 															required
 															inputProps={{
 																...params.inputProps,
-																form: "farmerInfoForm",
+																form:
+																	"farmerInfoForm",
 															}}
-															className={classes.rowItem}
+															className={
+																classes.rowItem
+															}
 														/>
 													)}
 													options={postOffices
@@ -1198,10 +1332,21 @@ function FarmerProfilePage(props) {
 																postOffice.naziv_post_ureda
 															);
 														})
-														.sort(new Intl.Collator("hr").compare)}
-													getOptionLabel={(option) => option}
-													value={newFarmerInfo.postalCodeLong}
-													onChange={(event, value) => {
+														.sort(
+															new Intl.Collator(
+																"hr"
+															).compare
+														)}
+													getOptionLabel={(option) =>
+														option
+													}
+													value={
+														newFarmerInfo.postalCodeLong
+													}
+													onChange={(
+														event,
+														value
+													) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
 															postalCodeLong: value,
@@ -1230,19 +1375,29 @@ function FarmerProfilePage(props) {
 								) : (
 									<React.Fragment>
 										<Hidden smDown>
-											<Box className={classes.contactsEditBox}>
+											<Box
+												className={
+													classes.contactsEditBox
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
 													id="phoneNumber"
 													label="Broj telefona"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.phoneNumber}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.phoneNumber
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															phoneNumber: event.target.value,
+															phoneNumber:
+																event.target
+																	.value,
 														});
 													}}
 													className={classes.rowItem}
@@ -1251,19 +1406,29 @@ function FarmerProfilePage(props) {
 										</Hidden>
 
 										<Hidden mdUp>
-											<Box className={classes.contactsEditBoxSm}>
+											<Box
+												className={
+													classes.contactsEditBoxSm
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
 													id="phoneNumber"
 													label="Broj telefona"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.phoneNumber}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.phoneNumber
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															phoneNumber: event.target.value,
+															phoneNumber:
+																event.target
+																	.value,
 														});
 													}}
 													className={classes.rowItem}
@@ -1283,12 +1448,18 @@ function FarmerProfilePage(props) {
 											E-mail adresa:
 										</Typography>
 
-										<Typography variant="body1">{farmerData.email}</Typography>
+										<Typography variant="body1">
+											{farmerData.email}
+										</Typography>
 									</Box>
 								) : (
 									<React.Fragment>
 										<Hidden smDown>
-											<Box className={classes.contactsEditBox}>
+											<Box
+												className={
+													classes.contactsEditBox
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
@@ -1296,12 +1467,16 @@ function FarmerProfilePage(props) {
 													id="email"
 													label="E-mail adresa"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
 													value={newFarmerInfo.email}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															email: event.target.value,
+															email:
+																event.target
+																	.value,
 														});
 													}}
 												/>
@@ -1309,7 +1484,11 @@ function FarmerProfilePage(props) {
 										</Hidden>
 
 										<Hidden mdUp>
-											<Box className={classes.contactsEditBoxSm}>
+											<Box
+												className={
+													classes.contactsEditBoxSm
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
@@ -1317,12 +1496,16 @@ function FarmerProfilePage(props) {
 													id="email"
 													label="E-mail adresa"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
 													value={newFarmerInfo.email}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															email: event.target.value,
+															email:
+																event.target
+																	.value,
 														});
 													}}
 												/>
@@ -1333,18 +1516,26 @@ function FarmerProfilePage(props) {
 							</Box>
 
 							<Box>
-								<Typography variant="h5" className={classes.subSectionTitle}>
+								<Typography
+									variant="h5"
+									className={classes.subSectionTitle}
+								>
 									Dostava
 								</Typography>
 
 								{!editMenuIsOpen ? (
 									<Typography variant="body1">
-										Dostava u roku od {farmerData.deliveryDays} dana.
+										Dostava u roku od{" "}
+										{farmerData.deliveryDays} dana.
 									</Typography>
 								) : (
 									<React.Fragment>
 										<Hidden smDown>
-											<Box className={classes.contactsEditBox}>
+											<Box
+												className={
+													classes.contactsEditBox
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
@@ -1352,12 +1543,18 @@ function FarmerProfilePage(props) {
 													id="deliveryDays"
 													label="Rok dostave u danima"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.deliveryDays}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.deliveryDays
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															deliveryDays: event.target.value,
+															deliveryDays:
+																event.target
+																	.value,
 														});
 													}}
 												/>
@@ -1365,7 +1562,11 @@ function FarmerProfilePage(props) {
 										</Hidden>
 
 										<Hidden mdUp>
-											<Box className={classes.contactsEditBoxSm}>
+											<Box
+												className={
+													classes.contactsEditBoxSm
+												}
+											>
 												<TextField
 													variant="filled"
 													fullWidth
@@ -1373,12 +1574,18 @@ function FarmerProfilePage(props) {
 													id="deliveryDays"
 													label="Rok dostave u danima"
 													required
-													inputProps={{ form: "farmerInfoForm" }}
-													value={newFarmerInfo.deliveryDays}
+													inputProps={{
+														form: "farmerInfoForm",
+													}}
+													value={
+														newFarmerInfo.deliveryDays
+													}
 													onChange={(event) => {
 														setNewFarmerInfo({
 															...newFarmerInfo,
-															deliveryDays: event.target.value,
+															deliveryDays:
+																event.target
+																	.value,
 														});
 													}}
 												/>
@@ -1391,14 +1598,19 @@ function FarmerProfilePage(props) {
 					</Box>
 
 					{props.auth.user === null ||
-					!(props.auth.user.userId === parseInt(props.match.params.id)) ? (
+					!(
+						props.auth.user.userId ===
+						parseInt(props.match.params.id)
+					) ? (
 						<React.Fragment />
 					) : (
 						<Box className={classes.section}>
 							<Container maxWidth="lg">
 								<Box className={classes.sectionTitleFlex}>
 									<Typography variant="h4">
-										{!orderHistoryIsOpen ? "Narudžbe" : "Povijest narudžbi"}
+										{!orderHistoryIsOpen
+											? "Narudžbe"
+											: "Povijest narudžbi"}
 									</Typography>
 
 									<Button
@@ -1406,7 +1618,9 @@ function FarmerProfilePage(props) {
 										size="medium"
 										color="inherit"
 										onClick={() => {
-											setOrderHistoryIsOpen(!orderHistoryIsOpen);
+											setOrderHistoryIsOpen(
+												!orderHistoryIsOpen
+											);
 											setPageNumOrders(1);
 										}}
 									>
@@ -1427,11 +1641,17 @@ function FarmerProfilePage(props) {
 										>
 											{farmerData.orders
 												.filter(
-													(order) => order.dostavljena === orderHistoryIsOpen
+													(order) =>
+														order.dostavljena ===
+														orderHistoryIsOpen
 												)
 												.sort((order1, order2) => {
-													const dateString1 = order1.datum_narudzbe.split(". ");
-													const dateString2 = order2.datum_narudzbe.split(". ");
+													const dateString1 = order1.datum_narudzbe.split(
+														". "
+													);
+													const dateString2 = order2.datum_narudzbe.split(
+														". "
+													);
 
 													let date1 = new Date(
 														dateString1[2],
@@ -1444,8 +1664,12 @@ function FarmerProfilePage(props) {
 														dateString2[0]
 													);
 
-													date1.setDate(date1.getDate());
-													date2.setDate(date2.getDate());
+													date1.setDate(
+														date1.getDate()
+													);
+													date2.setDate(
+														date2.getDate()
+													);
 
 													if (date1 < date2) {
 														return 1;
@@ -1470,8 +1694,12 @@ function FarmerProfilePage(props) {
 													>
 														<OrderCardFarmer
 															order={order}
-															deliveryDays={farmerData.deliveryDays}
-															setOrderIsDelivered={setOrderIsDelivered}
+															deliveryDays={
+																farmerData.deliveryDays
+															}
+															setOrderIsDelivered={
+																setOrderIsDelivered
+															}
 														/>
 													</Grid>
 												))}
@@ -1485,18 +1713,23 @@ function FarmerProfilePage(props) {
 													count={Math.ceil(
 														farmerData.orders.filter(
 															(order) =>
-																order.dostavljena === orderHistoryIsOpen
+																order.dostavljena ===
+																orderHistoryIsOpen
 														).length / 4
 													)}
 													defaultPage={1}
 													page={pageNumOrders}
-													onChange={(event, page) => setPageNumOrders(page)}
+													onChange={(event, page) =>
+														setPageNumOrders(page)
+													}
 												/>
 											</Box>
 										)}
 									</React.Fragment>
 								) : (
-									<Typography variant="body1">Nema narudžbi</Typography>
+									<Typography variant="body1">
+										Nema narudžbi
+									</Typography>
 								)}
 							</Container>
 						</Box>
@@ -1505,7 +1738,8 @@ function FarmerProfilePage(props) {
 					<Box
 						className={
 							props.auth.user !== null &&
-							props.auth.user.userId === parseInt(props.match.params.id)
+							props.auth.user.userId ===
+								parseInt(props.match.params.id)
 								? `${classes.sectionPaper}`
 								: `${classes.section}`
 						}
@@ -1516,11 +1750,15 @@ function FarmerProfilePage(props) {
 
 								{props.auth.user === null ||
 								!(
-									props.auth.user.userId === parseInt(props.match.params.id)
+									props.auth.user.userId ===
+									parseInt(props.match.params.id)
 								) ? (
 									<React.Fragment />
 								) : (
-									<Link to={`/oglas/novi_oglas`} className={classes.link}>
+									<Link
+										to={`/oglas/novi_oglas`}
+										className={classes.link}
+									>
 										<Button
 											variant="contained"
 											size="medium"
@@ -1588,8 +1826,13 @@ function FarmerProfilePage(props) {
 												>
 													<ProductCardFarmer
 														product={product}
-														farmerId={parseInt(props.match.params.id)}
-														deleteProduct={deleteProduct}
+														farmerId={parseInt(
+															props.match.params
+																.id
+														)}
+														deleteProduct={
+															deleteProduct
+														}
 													/>
 												</Grid>
 											))}
@@ -1600,16 +1843,23 @@ function FarmerProfilePage(props) {
 									) : (
 										<Box className={classes.pagination}>
 											<Pagination
-												count={Math.ceil(farmerData.products.length / 4)}
+												count={Math.ceil(
+													farmerData.products.length /
+														4
+												)}
 												defaultPage={1}
 												page={pageNumProducts}
-												onChange={(event, page) => setPageNumProducts(page)}
+												onChange={(event, page) =>
+													setPageNumProducts(page)
+												}
 											/>
 										</Box>
 									)}
 								</React.Fragment>
 							) : (
-								<Typography variant="body1">Nema oglasa</Typography>
+								<Typography variant="body1">
+									Nema oglasa
+								</Typography>
 							)}
 						</Container>
 					</Box>
@@ -1617,7 +1867,8 @@ function FarmerProfilePage(props) {
 					<Box
 						className={
 							props.auth.user !== null &&
-							props.auth.user.userId === parseInt(props.match.params.id)
+							props.auth.user.userId ===
+								parseInt(props.match.params.id)
 								? `${classes.section}`
 								: `${classes.sectionPaper}`
 						}
@@ -1639,8 +1890,12 @@ function FarmerProfilePage(props) {
 								<React.Fragment>
 									{farmerData.ratings
 										.sort((rating1, rating2) => {
-											const dateString1 = rating1.datum_kreiranja.split(". ");
-											const dateString2 = rating2.datum_kreiranja.split(". ");
+											const dateString1 = rating1.datum_kreiranja.split(
+												". "
+											);
+											const dateString2 = rating2.datum_kreiranja.split(
+												". "
+											);
 
 											let date1 = new Date(
 												dateString1[2],
@@ -1670,22 +1925,36 @@ function FarmerProfilePage(props) {
 										)
 										.map((rating, index) => (
 											<Box key={rating.sif_ocjene}>
-												<Box className={classes.ratingNameBtnBox}>
+												<Box
+													className={
+														classes.ratingNameBtnBox
+													}
+												>
 													<Rating
 														value={rating.ocjena}
 														precision={0.5}
 														readOnly
-														className={classes.rowItem}
+														className={
+															classes.rowItem
+														}
 													/>
 
 													{props.auth.user === null ||
-													!(props.auth.user.userId === rating.sif_autora) ? (
+													!(
+														props.auth.user
+															.userId ===
+														rating.sif_autora
+													) ? (
 														<React.Fragment />
 													) : (
 														<Button
 															size="medium"
 															color="inherit"
-															onClick={() => deleteRating(rating.sif_ocjene)}
+															onClick={() =>
+																deleteRating(
+																	rating.sif_ocjene
+																)
+															}
 														>
 															Obriši
 														</Button>
@@ -1695,7 +1964,9 @@ function FarmerProfilePage(props) {
 												<Box className={classes.rating}>
 													<Typography
 														variant="body1"
-														className={classes.rowItem}
+														className={
+															classes.rowItem
+														}
 													>
 														{rating.komentar}
 													</Typography>
@@ -1703,19 +1974,29 @@ function FarmerProfilePage(props) {
 													<Typography
 														variant="subtitle2"
 														color="textSecondary"
-														className={classes.rowItem}
+														className={
+															classes.rowItem
+														}
 													>
-														{rating.ime} {rating.prezime}
+														{rating.ime}{" "}
+														{rating.prezime}
 													</Typography>
 
-													<Typography variant="caption" color="textSecondary">
+													<Typography
+														variant="caption"
+														color="textSecondary"
+													>
 														{rating.datum_kreiranja}
 													</Typography>
 												</Box>
 
 												{rating.sif_ocjene !==
-													farmerData.ratings[farmerData.ratings.length - 1]
-														.sif_ocjene && index !== pageNumRatings * 3 - 1 ? (
+													farmerData.ratings[
+														farmerData.ratings
+															.length - 1
+													].sif_ocjene &&
+												index !==
+													pageNumRatings * 3 - 1 ? (
 													<Divider />
 												) : (
 													<React.Fragment />
@@ -1728,23 +2009,32 @@ function FarmerProfilePage(props) {
 									) : (
 										<Box className={classes.pagination}>
 											<Pagination
-												count={Math.ceil(farmerData.ratings.length / 3)}
+												count={Math.ceil(
+													farmerData.ratings.length /
+														3
+												)}
 												defaultPage={1}
 												page={pageNumRatings}
-												onChange={(event, page) => setPageNumRatings(page)}
+												onChange={(event, page) =>
+													setPageNumRatings(page)
+												}
 											/>
 										</Box>
 									)}
 								</React.Fragment>
 							) : !addRatingMenuIsOpen ? (
-								<Typography variant="body1">Nema ocjena</Typography>
+								<Typography variant="body1">
+									Nema ocjena
+								</Typography>
 							) : (
 								<React.Fragment />
 							)}
 
 							{addRatingMenuIsOpen ? (
 								<Box className={classes.rowItem}>
-									<form onSubmit={(event) => addRating(event)}>
+									<form
+										onSubmit={(event) => addRating(event)}
+									>
 										{farmerData.ratings !== null &&
 										farmerData.ratings.length !== 0 ? (
 											<Divider />
@@ -1778,7 +2068,8 @@ function FarmerProfilePage(props) {
 												onChange={(event) => {
 													setNewRating({
 														...newRating,
-														comment: event.target.value,
+														comment:
+															event.target.value,
 													});
 												}}
 												required
@@ -1806,7 +2097,9 @@ function FarmerProfilePage(props) {
 														rating: 5,
 														comment: "",
 													});
-													setAddRatingMenuIsOpen(false);
+													setAddRatingMenuIsOpen(
+														false
+													);
 												}}
 											>
 												Odustani
@@ -1830,7 +2123,8 @@ function FarmerProfilePage(props) {
 											setNewRating({
 												rating: 5,
 												farmerId: farmerData.farmerId,
-												authorId: props.auth.user.userId,
+												authorId:
+													props.auth.user.userId,
 												comment: "",
 											});
 										}
